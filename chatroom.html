@@ -1,0 +1,129 @@
+
+<head>
+  <meta charset="utf-8">
+  <title>Chat Room</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+</head>
+
+<body>
+  {{> roomList}}
+  {{> roomDetail}}
+</body>
+
+<template name="roomList">
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="#">Chat Room</a>
+        <div class="nav-collapse collapse">
+          <p class="navbar-text">
+            {{loginButtons}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="roomDetail">
+  {{#if showCreateDialog}}
+    {{> createDialog}}
+  {{/if}}
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span3">
+        <div class="well sidebar-nav" style="height:450px; overflow-y:auto">
+          <ul class="nav nav-list">
+            <li class="nav-header">Room List</li>
+            {{#each rooms}}
+              {{> room}}
+            {{/each}}
+            <li><a class="btn btn-link create">Create room ...</a></li>
+          </ul>
+        </div><!--/.well -->
+      </div><!--/span-->
+      <div class="span9">
+        {{#if opened}}
+        <ul class="nav nav-tabs">
+          <li class="active">
+            <a href="#">{{opened}}</a>
+          </li>
+        </ul>
+        {{/if}}
+        <div class="well well-large" style="height:300px; overflow-y:auto">
+          {{#each messages}}
+            {{> message}}
+          {{/each}}
+        </div>
+      </div><!--/span-->
+      {{#if opened}}
+      <div class="span9">
+        <form class="form-inline" action="javascript:void(0)">
+          <input type="text" class="input-large message" placeholder="Say something..." style="width:60%">
+          {{> upload}}
+          {{#if owner}}
+          <a class="btn btn-danger pull-right closeRoom">Close</a>
+          {{else}}
+          <a class="btn btn-danger pull-right leaveRoom">Leave</a>
+          {{/if}}
+        </form>
+      </div>
+      {{/if}}
+    </div><!--/row-->
+
+    <hr>
+
+    <footer>
+      <p>&copy; Smartekworks.com 2013</p>
+    </footer>
+
+  </div><!--/.fluid-container-->
+</template>
+
+<template name="room">
+  <li class="{{selected}}"><a class="btn btn-link room">{{name}}</a></li>
+</template>
+
+<template name="message">
+  <p>{{name}}:{{message}}</p>
+</template>
+
+<template name="createDialog">
+  <div class="mask"> </div>
+  <div class="modal">
+    <div class="modal-header">
+      <button type="button" class="close cancel">&times;</button>
+      <h3>Create Room</h3>
+    </div>
+
+    <div class="modal-body">
+      {{#if error}}
+        <div class="alert alert-error">{{error}}</div>
+      {{/if}}
+
+      <label>Title</label>
+      <input type="text" class="title span5">
+
+      <label class="checkbox">
+        <input type="checkbox" class="private">
+        Private chat room
+      </label>
+    </div>
+
+    <div class="modal-footer">
+      <a class="btn cancel">Cancel</a>
+      <a class="btn btn-primary save">Create</a>
+    </div>
+  </div>
+</template>
+
+<template name="upload">
+  <input type=file />
+</template>
